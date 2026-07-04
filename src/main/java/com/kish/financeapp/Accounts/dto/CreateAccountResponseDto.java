@@ -1,13 +1,10 @@
 package com.kish.financeapp.Accounts.dto;
 
-import com.kish.financeapp.Accounts.Account;
+import com.kish.financeapp.Accounts.enums.AccountType;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
-public class CreateAccountResponseDto {
-    private Integer accountID;
-    private String name;
-    private String accountType;
-    private String availableBalance;
-}
+public record CreateAccountResponseDto(
+     Integer accountID,
+     String name,
+     AccountType accountType,
+     String availableBalance
+) {}

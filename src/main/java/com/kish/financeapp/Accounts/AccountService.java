@@ -19,12 +19,18 @@ public class AccountService {
 
     public CreateAccountResponseDto createAccount(CreateAccountRequestDto accountRequest) {
         Account account = new Account();
-        account.setName(accountRequest.getName());
-        account.setAccountType(accountRequest.getAccountType());
+        account.setName(accountRequest.name());
+        account.setAccountType(accountRequest.accountType());
         account.setAvailableBalance(BigDecimal.ZERO); //Accounts start with a zero balance at creation
 
-        accountRepository.
-        return account;
+        Account saved = accountRepository.save(account);
+        return new CreateAccountResponseDto(
+            saved.getAccountID(),
+            saved.getName(),
+            saved.getAccountType(),
+            saved.getAvailableBalance().toString()
+        );
+
     }
 
 }
