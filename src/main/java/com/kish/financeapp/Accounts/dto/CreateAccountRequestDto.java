@@ -5,3 +5,4 @@ import com.kish.financeapp.Accounts.enums.AccountType;
 public record CreateAccountRequestDto(
     String name,
     AccountType accountType) {}   
+    
