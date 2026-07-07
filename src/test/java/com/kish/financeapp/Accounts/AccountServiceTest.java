@@ -27,9 +27,8 @@ public class AccountServiceTest {
 
     @Test
     public void testCreateAccount() {
-        //When I give the service a name and account type, it returns an id, name, account type and available balance
+        //verify an account is saved to the database correctly
 
-        //create an account req
         CreateAccountRequestDto accountRequest = new CreateAccountRequestDto("Nedbank Account", AccountType.DEBIT);
 
         when(accountRepository.save(any(Account.class)))
@@ -38,11 +37,23 @@ public class AccountServiceTest {
         CreateAccountResponseDto accountResponse = accountService.createAccount(accountRequest);
 
         assertEquals(accountResponse.accountType(), AccountType.DEBIT);
-       
-        //assert
         verify(accountRepository).save(any(Account.class));
     }
 
+    @Test
+    public void testCreateAccountWithDuplicateName() {
+        //verify that an exception is thrown when trying to create an account with a duplicate name
+
+        CreateAccountRequestDto accountRequest = new CreateAccountRequestDto("Nedbank Account", AccountType.DEBIT);
+
+        when(accountRepository.existsByName(accountRequest.name())).thenReturn(true);
+
+        try {
+            accountService.createAccount(accountRequest);
+        } catch (Exception e) {
+            assertEquals("Account with same name already exists.", e.getMessage());
+        }
+    }
     
 
     

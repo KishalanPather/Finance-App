@@ -1,7 +1,7 @@
 package com.kish.financeapp.Accounts.exceptions;
 
-public class AccountAlreadyExistsException extends RuntimeException {
-    public AccountAlreadyExistsException(String message){
+public class DuplicateAccountException extends RuntimeException {
+    public DuplicateAccountException(String message){
         super(message);
     }
 }
