@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kish.financeapp.Accounts.dto.CreateAccountRequestDto;
-import com.kish.financeapp.Accounts.dto.CreateAccountResponseDto;
+import com.kish.financeapp.Accounts.dto.AccountResponseDto;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api/account/v1")
 public class AccountController {
 
     private final AccountService accountService;
@@ -26,7 +26,7 @@ public class AccountController {
     }
     
     @PostMapping()
-    public CreateAccountResponseDto createAccount(@RequestBody CreateAccountRequestDto accountRequest){
+    public AccountResponseDto createAccount(@RequestBody CreateAccountRequestDto accountRequest){
         return accountService.createAccount(accountRequest);
     }
 

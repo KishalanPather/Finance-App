@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
 import com.kish.financeapp.Accounts.dto.CreateAccountRequestDto;
-import com.kish.financeapp.Accounts.dto.CreateAccountResponseDto;
-import com.kish.financeapp.Accounts.exceptions.AccountAlreadyExistsException;
+import com.kish.financeapp.Accounts.dto.AccountResponseDto;
+import com.kish.financeapp.Accounts.exceptions.DuplicateAccountException;
 
 @Service
 public class AccountService {
@@ -17,11 +17,10 @@ public class AccountService {
         this.accountRepository = repository;
     } 
 
-    public CreateAccountResponseDto createAccount(CreateAccountRequestDto accountRequest) {
-        // need to add validation to ensure the same account name and type can't be added. 
+    public AccountResponseDto createAccount(CreateAccountRequestDto accountRequest) {
 
         if (accountRepository.existsByName(accountRequest.name())){
-            throw new AccountAlreadyExistsException("Account with same name already exists.");
+            throw new DuplicateAccountException("Account with same name already exists.");
         }
 
         Account account = new Account();
@@ -31,7 +30,7 @@ public class AccountService {
 
 
         Account saved = accountRepository.save(account);
-        return new CreateAccountResponseDto(
+        return new AccountResponseDto(
             saved.getAccountID(),
             saved.getName(),
             saved.getAccountType(),

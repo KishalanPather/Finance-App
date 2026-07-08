@@ -5,6 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.kish.financeapp.Accounts.dto.CreateAccountRequestDto;
-import com.kish.financeapp.Accounts.dto.CreateAccountResponseDto;
+import com.kish.financeapp.Accounts.dto.AccountResponseDto;
 import com.kish.financeapp.Accounts.enums.AccountType;
 
 
@@ -34,7 +37,7 @@ public class AccountServiceTest {
         when(accountRepository.save(any(Account.class)))
             .thenAnswer(i -> i.getArgument(0));
 
-        CreateAccountResponseDto accountResponse = accountService.createAccount(accountRequest);
+        AccountResponseDto accountResponse = accountService.createAccount(accountRequest);
 
         assertEquals(accountResponse.accountType(), AccountType.DEBIT);
         verify(accountRepository).save(any(Account.class));
@@ -56,8 +59,45 @@ public class AccountServiceTest {
     }
     
 
-    
+    @Test
+    public void viewAllAccounts_return_all_accounts(){
+        //When I call accountService.getAllAccounts(), it must return the correct response, which is a list of response dtos
+        
+        // arrange
+        Account account1 = new Account(1, "Nedbank account",AccountType.DEBIT,BigDecimal.valueOf(0));
+        Account account2 = new Account(2, "Discovery account",AccountType.CREDIT,BigDecimal.valueOf(200));
+        Account account3 = new Account(3, "Capitec account",AccountType.DEBIT,BigDecimal.valueOf(400));
 
-    
+        when(accountRepository.findAll())
+            .thenReturn(List.of(account1,account2,account3));
+
+        // act
+        List<AccountResponseDto> result = accountService.viewAllAccounts();
+
+        // assert
+        assertEquals(3, result.size());
+        assertEquals("Nedbank account", result.get(0).name());
+        assertEquals("Discovery account", result.get(1).name());
+        assertEquals("Capitec account", result.get(2).name());
+
+        verify(accountRepository).findAll();
+
+
+        
+    }
+
+    @Test
+    public void  viewAllAccounts_return_empty_list(){
+        // When I call accountService.getAllAccounts(), it must return an empty list
+        when(accountRepository.findAll()).thenReturn(List.of());
+
+        // act
+        List<AccountResponseDto> result = accountService.viewAllAccounts();
+
+        // assert
+        assertEquals(0, result.size());
+
+        verify(accountRepository).findAll();
+    }
     
 }
