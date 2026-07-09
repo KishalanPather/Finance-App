@@ -1,5 +1,7 @@
 package com.kish.financeapp.Accounts;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +23,9 @@ public class AccountController {
 
 
     @GetMapping()
-    public String getAccounts(){
-        return "Example: Account 1, Account2, etc";
+    public List<AccountResponseDto> getAllAccounts(){
+        return accountService.getAllAccounts();
+        
     }
     
     @PostMapping()

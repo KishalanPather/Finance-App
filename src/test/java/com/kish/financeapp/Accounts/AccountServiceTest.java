@@ -72,7 +72,7 @@ public class AccountServiceTest {
             .thenReturn(List.of(account1,account2,account3));
 
         // act
-        List<AccountResponseDto> result = accountService.viewAllAccounts();
+        List<AccountResponseDto> result = accountService.getAllAccounts();
 
         // assert
         assertEquals(3, result.size());
@@ -92,7 +92,7 @@ public class AccountServiceTest {
         when(accountRepository.findAll()).thenReturn(List.of());
 
         // act
-        List<AccountResponseDto> result = accountService.viewAllAccounts();
+        List<AccountResponseDto> result = accountService.getAllAccounts();
 
         // assert
         assertEquals(0, result.size());

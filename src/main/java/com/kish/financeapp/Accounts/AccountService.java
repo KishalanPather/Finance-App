@@ -1,6 +1,8 @@
 package com.kish.financeapp.Accounts;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -23,11 +25,13 @@ public class AccountService {
             throw new DuplicateAccountException("Account with same name already exists.");
         }
 
-        Account account = new Account();
-        account.setName(accountRequest.name());
-        account.setAccountType(accountRequest.accountType());
-        account.setAvailableBalance(BigDecimal.ZERO); //Accounts start with a zero balance at creation
+        Account account = new Account(
+            null, 
+            accountRequest.name(),
+            accountRequest.accountType(),
+            BigDecimal.ZERO
 
+        );
 
         Account saved = accountRepository.save(account);
         return new AccountResponseDto(
@@ -37,6 +41,19 @@ public class AccountService {
             saved.getAvailableBalance().toString()
         );
 
+    }
+
+    public List<AccountResponseDto> getAllAccounts(){
+        List<Account> accounts = accountRepository.findAll();
+
+         return accounts.stream().map(account -> new AccountResponseDto(
+            account.getAccountID(),
+            account.getName(),
+            account.getAccountType(),
+            account.getAvailableBalance().toString()
+         ))
+         .toList();
+            
     }
 
 }
