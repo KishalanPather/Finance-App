@@ -1,4 +1,4 @@
-package com.kish.financeapp.Accounts.dto;
+package com.kish.financeapp.Accounts.dtos;
 
 import com.kish.financeapp.Accounts.enums.AccountType;
 

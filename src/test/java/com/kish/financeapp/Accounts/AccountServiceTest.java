@@ -14,8 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.kish.financeapp.Accounts.dto.CreateAccountRequestDto;
-import com.kish.financeapp.Accounts.dto.AccountResponseDto;
+import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
+import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
 import com.kish.financeapp.Accounts.enums.AccountType;
 
 

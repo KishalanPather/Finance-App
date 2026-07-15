@@ -1,5 +1,5 @@
 package com.kish.financeapp.Transactions;
 
-public class TransactionRespository {
+public class TransactionRepository {
     
 }

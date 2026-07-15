@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.kish.financeapp.Accounts.dto.CreateAccountRequestDto;
-import com.kish.financeapp.Accounts.dto.AccountResponseDto;
+import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
+import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
 import com.kish.financeapp.Accounts.exceptions.DuplicateAccountException;
 
 @Service

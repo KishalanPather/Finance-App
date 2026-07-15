@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kish.financeapp.Accounts.dto.CreateAccountRequestDto;
-import com.kish.financeapp.Accounts.dto.AccountResponseDto;
+import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
+import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
 
 @RestController
 @RequestMapping("/api/account/v1")
