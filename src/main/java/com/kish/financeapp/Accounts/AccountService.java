@@ -20,7 +20,6 @@ public class AccountService {
     } 
 
     public AccountResponseDto createAccount(CreateAccountRequestDto accountRequest) {
-
         if (accountRepository.existsByName(accountRequest.name())){
             throw new DuplicateAccountException("Account with same name already exists.");
         }
