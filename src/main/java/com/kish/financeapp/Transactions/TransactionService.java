@@ -1,5 +1,7 @@
 package com.kish.financeapp.Transactions;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -10,6 +12,7 @@ import com.kish.financeapp.Accounts.Account;
 import com.kish.financeapp.Accounts.AccountRepository;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
+import com.kish.financeapp.Transactions.enums.TransactionType;
 import com.kish.financeapp.Transactions.exceptions.AccountNotFoundException;
 
 import jakarta.transaction.Transactional;
@@ -29,10 +32,52 @@ public class TransactionService {
 
     @Transactional
     public TransactionResponseDto addIncome(AddIncomeRequestDto incomeRequest){
-        //validate to find account, fail fast
-        Account account = accountRepository.findById(incomeRequest.accountId())
-            .orElseThrow(() -> new AccountNotFoundException("Account with ID: " + incomeRequest.accountId() + " not found."));
-            return new TransactionResponseDto();
+        Account account = getAccountById(incomeRequest.accountId());
+
+        account.setAvailableBalance(
+            account.getAvailableBalance().add(incomeRequest.amount())
+            );
+
+            Transaction transaction = createIncomeTransaction(incomeRequest);
+
+            Transaction saved = transactionRepository.save(transaction);
+
+            return mapToResponse(saved);
+
+        
+    }
+
+    //Helper Functions
+    private Account getAccountById(Integer accountId){
+        return accountRepository.findById(accountId)
+            .orElseThrow(() -> new AccountNotFoundException("Account with ID: " + accountId + " not found."));
+    }
+
+    private Transaction createIncomeTransaction(AddIncomeRequestDto incomeRequest){
+        return Transaction.builder()
+                .envelopeId(null)
+                .accountId(incomeRequest.accountId())
+                .amount(incomeRequest.amount())
+                .description(incomeRequest.description())
+                .transactionType(incomeRequest.transactionType())
+                .category(incomeRequest.category())
+                .date(new Date())
+                .note(incomeRequest.note())
+                .build();
+    }
+
+    private TransactionResponseDto mapToResponse(Transaction transaction){
+        return new TransactionResponseDto(
+                transaction.getTransactionId(),
+                transaction.getEnvelopeId(),
+                transaction.getAccountId(),
+                transaction.getAmount(),
+                transaction.getDescription(),
+                transaction.getCategory(),
+                transaction.getNote(),
+                transaction.getTransactionType(),
+                transaction.getDate()
+            );
     }
 }
 

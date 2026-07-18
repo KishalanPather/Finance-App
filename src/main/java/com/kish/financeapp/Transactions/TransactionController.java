@@ -20,7 +20,7 @@ public class TransactionController {
 
 
     @PostMapping("/income")
-    public TransactionResponseDto addIncome(@Valid @RequestBody AddIncomeRequestDto incomeRequest){
+    public TransactionResponseDto addIncome( @RequestBody AddIncomeRequestDto incomeRequest){
         return transactionService.addIncome(incomeRequest);
     }
 

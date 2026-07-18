@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter 
 @Setter
+@Builder
 public class Transaction {
     
     @Id
@@ -31,13 +33,13 @@ public class Transaction {
 
     private Integer accountId;
 
+    private BigDecimal amount;
+
     private String description;
 
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
     
-    private BigDecimal amount;
-
     private String category;
 
     private Date date;
