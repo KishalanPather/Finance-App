@@ -1,7 +1,7 @@
 package com.kish.financeapp.Transactions;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import com.kish.financeapp.Transactions.enums.TransactionType;
 
@@ -25,7 +25,7 @@ public class Transaction {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionId;
+    private Integer transactionId;
 
     private Integer envelopeId;
 
