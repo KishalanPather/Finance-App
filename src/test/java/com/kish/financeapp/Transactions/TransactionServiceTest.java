@@ -1,6 +1,7 @@
 package com.kish.financeapp.Transactions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,9 +20,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.kish.financeapp.Accounts.Account;
 import com.kish.financeapp.Accounts.AccountRepository;
 import com.kish.financeapp.Accounts.enums.AccountType;
+import com.kish.financeapp.Accounts.exceptions.DuplicateAccountException;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
 import com.kish.financeapp.Transactions.enums.TransactionType;
+import com.kish.financeapp.Transactions.exceptions.AccountNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class TransactionServiceTest {
@@ -164,8 +167,27 @@ public class TransactionServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenAmountIsNegative(){}
+    public void shouldThrowExceptionWhenAccountDoesNotExist(){
+         //arrange
+        AddIncomeRequestDto incomeRequest = new AddIncomeRequestDto(
+            1,
+            BigDecimal.valueOf(100),
+            TransactionType.INCOME,
+            "Salary",
+            "Job",
+            "Monthly salary"
+        );
+
+        //mock
+        when(accountRepository.findById(1))
+            .thenReturn(Optional.empty());
+
+
+        //assert and act
+        assertThrows(AccountNotFoundException.class, () -> transactionService.addIncome(incomeRequest));
+
+    }
 
     @Test
-    public void shouldThrowExceptionWhenAccountDoesNotExist(){}
+    public void shouldThrowExceptionWhenAmountIsNegative(){}
 }
