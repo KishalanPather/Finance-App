@@ -12,7 +12,7 @@ import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
 import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
 
 @RestController
-@RequestMapping("/api/account/v1")
+@RequestMapping("/api/v1/account")
 public class AccountController {
 
     private final AccountService accountService;
