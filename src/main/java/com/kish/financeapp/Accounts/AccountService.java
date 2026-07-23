@@ -13,9 +13,7 @@ import com.kish.financeapp.Accounts.exceptions.DuplicateAccountException;
 
 @Service
 public class AccountService {
-
     private final AccountRepository accountRepository;
-
     public AccountService(AccountRepository repository) {
         this.accountRepository = repository;
     } 
