@@ -53,7 +53,7 @@ public class AccountService {
          Account account = accountRepository.findById(id)
             .orElseThrow(() -> new AccountNotFoundException("Account with ID: " + id + " not found."));
 
-        if (account.getAvailableBalance().compareTo(BigDecimal.ZERO) == 0){
+        if (account.getAvailableBalance().compareTo(BigDecimal.ZERO) != 0){
             throw new IncorrectAccountBalanceException("Account balance is " + account.getAvailableBalance() + ". Account balance must be zero, before deletion.");
         }
 
