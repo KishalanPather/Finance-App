@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.kish.financeapp.Accounts.enums.AccountStatus;
 import com.kish.financeapp.Accounts.enums.AccountType;
 
 @Entity
@@ -30,5 +31,7 @@ public class Account {
     private AccountType accountType; 
 
     private BigDecimal availableBalance;
+
+    private AccountStatus status;
 
 }

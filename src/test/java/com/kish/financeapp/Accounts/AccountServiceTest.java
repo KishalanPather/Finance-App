@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
 import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
+import com.kish.financeapp.Accounts.enums.AccountStatus;
 import com.kish.financeapp.Accounts.enums.AccountType;
 
 
@@ -64,9 +65,9 @@ public class AccountServiceTest {
         //When I call accountService.getAllAccounts(), it must return the correct response, which is a list of response dtos
         
         // arrange
-        Account account1 = new Account(1, "Nedbank account",AccountType.DEBIT,BigDecimal.valueOf(0));
-        Account account2 = new Account(2, "Discovery account",AccountType.CREDIT,BigDecimal.valueOf(200));
-        Account account3 = new Account(3, "Capitec account",AccountType.DEBIT,BigDecimal.valueOf(400));
+        Account account1 = new Account(1, "Nedbank account",AccountType.DEBIT,BigDecimal.valueOf(0), AccountStatus.ACTIVE);
+        Account account2 = new Account(2, "Discovery account",AccountType.CREDIT,BigDecimal.valueOf(200),AccountStatus.ACTIVE);
+        Account account3 = new Account(3, "Capitec account",AccountType.DEBIT,BigDecimal.valueOf(400),AccountStatus.ACTIVE);
 
         when(accountRepository.findAll())
             .thenReturn(List.of(account1,account2,account3));

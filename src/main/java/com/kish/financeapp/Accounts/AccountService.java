@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
 import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
+import com.kish.financeapp.Accounts.enums.AccountStatus;
 import com.kish.financeapp.Accounts.exceptions.DuplicateAccountException;
 
 @Service
@@ -28,7 +29,8 @@ public class AccountService {
             null, 
             accountRequest.name(),
             accountRequest.accountType(),
-            BigDecimal.ZERO
+            BigDecimal.ZERO,
+            AccountStatus.ACTIVE
 
         );
 
