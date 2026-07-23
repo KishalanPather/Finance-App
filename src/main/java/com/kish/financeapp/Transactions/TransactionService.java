@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.kish.financeapp.Accounts.Account;
 import com.kish.financeapp.Accounts.AccountRepository;
+import com.kish.financeapp.Accounts.exceptions.AccountNotFoundException;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
 import com.kish.financeapp.Transactions.enums.TransactionType;
-import com.kish.financeapp.Transactions.exceptions.AccountNotFoundException;
 
 import jakarta.transaction.Transactional;
 
