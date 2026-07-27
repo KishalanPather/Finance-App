@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,6 +59,8 @@ public class AccountServiceTest {
             assertEquals("Account with same name already exists.", e.getMessage());
         }
     }
+
+// ------- View Account Tests
     
 
     @Test
@@ -100,5 +103,41 @@ public class AccountServiceTest {
 
         verify(accountRepository).findAll();
     }
+
+
+    //------------------- Delete account tests
+    @Test
+    public void ShouldChangeStatusToClosed(){
+        // Create an account,
+        // when accountRepository is called, return that acc
+        // run the function
+        // assert the status
+
+        //Arrange
+        Account account = new Account(1, "Nedbank account",AccountType.DEBIT,BigDecimal.valueOf(0), AccountStatus.ACTIVE);
+
+        when(accountRepository.findById(1))
+            .thenReturn(Optional.of(account));
+
+        //Act
+        accountService.markAccountClosed(1);
+
+        //Assert
+        assertEquals(AccountStatus.CLOSED, account.getStatus());
+
+
+    }
+
+
+    @Test
+    public void ShouldThrowExceptionWhenAccountBalanceIsNotZero(){}
+
+
+    @Test
+    public void ShouldThrowExceptionWhenAccountDoesNotExist(){}
+
+
+    @Test
+    public void ShouldReturnCorrectResponseDto(){}
     
 }
