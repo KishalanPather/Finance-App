@@ -1,6 +1,7 @@
 package com.kish.financeapp.Accounts;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,6 +20,7 @@ import com.kish.financeapp.Accounts.dtos.AccountResponseDto;
 import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
 import com.kish.financeapp.Accounts.enums.AccountStatus;
 import com.kish.financeapp.Accounts.enums.AccountType;
+import com.kish.financeapp.Accounts.exceptions.AccountNotFoundException;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -130,7 +132,14 @@ public class AccountServiceTest {
 
 
     @Test
-    public void ShouldThrowExceptionWhenAccountBalanceIsNotZero(){}
+    public void ShouldThrowExceptionWhenAccountBalanceIsNotZero(){
+        //arrange
+        when(accountRepository.findById(1))
+            .thenReturn(Optional.empty());
+
+        //act and assert
+        assertThrows(AccountNotFoundException.class, () -> accountService.markAccountClosed(1));
+    }
 
 
     @Test
