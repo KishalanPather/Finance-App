@@ -133,6 +133,11 @@ public class AccountServiceTest {
 
     @Test
     public void ShouldThrowExceptionWhenAccountBalanceIsNotZero(){
+    }
+
+
+    @Test
+    public void ShouldThrowExceptionWhenAccountDoesNotExist(){
         //arrange
         when(accountRepository.findById(1))
             .thenReturn(Optional.empty());
@@ -140,10 +145,6 @@ public class AccountServiceTest {
         //act and assert
         assertThrows(AccountNotFoundException.class, () -> accountService.markAccountClosed(1));
     }
-
-
-    @Test
-    public void ShouldThrowExceptionWhenAccountDoesNotExist(){}
 
 
     @Test
