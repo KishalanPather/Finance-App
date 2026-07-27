@@ -21,6 +21,7 @@ import com.kish.financeapp.Accounts.dtos.CreateAccountRequestDto;
 import com.kish.financeapp.Accounts.enums.AccountStatus;
 import com.kish.financeapp.Accounts.enums.AccountType;
 import com.kish.financeapp.Accounts.exceptions.AccountNotFoundException;
+import com.kish.financeapp.Accounts.exceptions.IncorrectAccountBalanceException;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -133,6 +134,15 @@ public class AccountServiceTest {
 
     @Test
     public void ShouldThrowExceptionWhenAccountBalanceIsNotZero(){
+        //Arrange account with balance != 0
+        Account account = new Account(1, "Nedbank account",AccountType.DEBIT,BigDecimal.valueOf(322), AccountStatus.ACTIVE);
+
+        when(accountRepository.findById(1))
+            .thenReturn(Optional.of(account));
+
+        
+        //act and assert
+        assertThrows(IncorrectAccountBalanceException.class, () -> accountService.markAccountClosed(1));
     }
 
 
