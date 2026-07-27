@@ -39,6 +39,8 @@ public class TransactionServiceTest {
     private TransactionService transactionService;
 
 
+    //----------- Add an Income tests
+
     @Test
     public void shouldSaveIncomeTransaction(){
         //Arrange: Build dto

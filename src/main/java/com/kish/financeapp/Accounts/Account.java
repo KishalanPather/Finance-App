@@ -32,6 +32,6 @@ public class Account {
 
     private BigDecimal availableBalance;
 
-    private AccountStatus status;
+    private AccountStatus accountStatus;
 
 }

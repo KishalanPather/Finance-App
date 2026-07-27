@@ -89,8 +89,6 @@ public class AccountServiceTest {
 
         verify(accountRepository).findAll();
 
-
-        
     }
 
     @Test
@@ -126,7 +124,7 @@ public class AccountServiceTest {
         accountService.markAccountClosed(1);
 
         //Assert
-        assertEquals(AccountStatus.CLOSED, account.getStatus());
+        assertEquals(AccountStatus.CLOSED, account.getAccountStatus());
 
 
     }
@@ -158,6 +156,25 @@ public class AccountServiceTest {
 
 
     @Test
-    public void ShouldReturnCorrectResponseDto(){}
+    public void ShouldReturnCorrectResponseDto(){
+         //Arrange
+        Account account = new Account(1, "Nedbank account",AccountType.DEBIT,BigDecimal.valueOf(0), AccountStatus.ACTIVE);
+
+        when(accountRepository.findById(1))
+            .thenReturn(Optional.of(account));
+
+
+        
+        //act
+        AccountResponseDto response = accountService.markAccountClosed(1);
+        
+        //assert
+        assertEquals(account.getAccountID(), response.accountID());
+        assertEquals(account.getName(), response.name());
+        assertEquals(account.getAccountType(), response.accountType());
+        assertEquals(account.getAvailableBalance().toString(), response.availableBalance());
+        assertEquals(account.getAccountStatus(), response.accountStatus());
+
+    }
     
 }

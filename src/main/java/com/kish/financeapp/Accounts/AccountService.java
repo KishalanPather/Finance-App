@@ -57,7 +57,7 @@ public class AccountService {
             throw new IncorrectAccountBalanceException("Account balance is " + account.getAvailableBalance() + ". Account balance must be zero, before deletion.");
         }
 
-        account.setStatus(AccountStatus.CLOSED);
+        account.setAccountStatus(AccountStatus.CLOSED);
 
         return mapToAccountResponse(account);
     }
@@ -73,7 +73,7 @@ public class AccountService {
             account.getName(),
             account.getAccountType(),
             account.getAvailableBalance().toString(),
-            account.getStatus()
+            account.getAccountStatus()
         );
     }
 
