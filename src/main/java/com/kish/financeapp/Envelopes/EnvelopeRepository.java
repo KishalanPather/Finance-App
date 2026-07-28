@@ -1,5 +1,10 @@
 package com.kish.financeapp.Envelopes;
 
-public class EnvelopeRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+public interface EnvelopeRepository extends JpaRepository<Envelope,Integer>{
     
-}
+}  
+    
+
