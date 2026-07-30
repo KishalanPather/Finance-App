@@ -77,7 +77,7 @@ public class EnvelopeService {
 
 
         Transaction transaction = Transaction.builder()
-            .envelopeId(null)
+            .envelopeId(envelopeId)
             .accountId(fundRequest.accountId())
             .amount(fundRequest.amount())
             .description("Fund Envelope")
@@ -90,6 +90,7 @@ public class EnvelopeService {
         transactionRepository.save(transaction);
 
         EnvelopeResponseDto envelopeResponse = mapEnvelopeResponse(envelope);
+        return envelopeResponse;
     }
 
 
