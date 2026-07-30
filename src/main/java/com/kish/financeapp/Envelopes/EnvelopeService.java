@@ -40,6 +40,11 @@ public class EnvelopeService {
     }
 
 
+    public EnvelopeResponseDto fundEnvelope(Integer id, FundRequestDto incomeRequest){
+        
+    }
+
+
 // ----------- Helper functions
     private Envelope createEnvelopeObject(CreateEnvelopeRequestDto envelopeRequest){
         return Envelope.builder()
