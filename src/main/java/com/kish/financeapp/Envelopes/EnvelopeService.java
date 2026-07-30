@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 import com.kish.financeapp.Accounts.AccountRepository;
 import com.kish.financeapp.Envelopes.dtos.CreateEnvelopeRequestDto;
 import com.kish.financeapp.Envelopes.dtos.EnvelopeResponseDto;
+import com.kish.financeapp.Envelopes.dtos.FundRequestDto;
 import com.kish.financeapp.Envelopes.exceptions.DuplicateEnvelopeException;
 import com.kish.financeapp.Transactions.TransactionRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class EnvelopeService {
@@ -25,6 +28,7 @@ public class EnvelopeService {
         this.accountRepository = accountRepository;
     }
 
+    @Transactional
     public EnvelopeResponseDto createEnvelope(CreateEnvelopeRequestDto envelopeRequest){
         if (envelopeRepository.existsByName(envelopeRequest.name())){
             throw new DuplicateEnvelopeException("Envelope with same name already exists.");
@@ -40,8 +44,9 @@ public class EnvelopeService {
     }
 
 
+    @Transactional
     public EnvelopeResponseDto fundEnvelope(Integer id, FundRequestDto incomeRequest){
-        
+
     }
 
 
