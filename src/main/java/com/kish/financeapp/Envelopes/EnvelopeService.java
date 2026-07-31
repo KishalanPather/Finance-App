@@ -54,26 +54,16 @@ public class EnvelopeService {
 
 
     @Transactional
-    public EnvelopeResponseDto fundEnvelope(Integer envelopeId, FundRequestDto fundRequest){
+    public EnvelopeResponseDto fundEnvelope(Integer envelopeId, FundRequestDto fundRequest){ 
         Account account = accountRepository.findById(fundRequest.accountId())
             .orElseThrow(() -> new AccountNotFoundException("Account with ID: " + fundRequest.accountId() + " not found."));
 
-        if (account.getAccountStatus() == AccountStatus.CLOSED ){
-            throw new IncorrectAccountStateException("Account cannot be closed.");
-        }
-
-        BigDecimal requestedAmount = fundRequest.amount();
-        BigDecimal accountBalance = account.getAvailableBalance();
-
-        if (requestedAmount.compareTo(accountBalance) > 0){
-            throw new IncorrectAccountBalanceException("Insufficient funds in account.");
-        }
+         validateAccount(account, fundRequest.amount());
 
         Envelope envelope = envelopeRepository.findById(envelopeId)
             .orElseThrow(() -> new EnvelopeNotFoundException("Envelope with ID: "+ envelopeId + " not found." ));
-        
-        account.setAvailableBalance(account.getAvailableBalance().subtract(fundRequest.amount()));
-        envelope.setEnvelopeBalance(envelope.getEnvelopeBalance().add(fundRequest.amount()));
+
+        moveFunds(account, envelope, fundRequest.amount());
 
 
         Transaction transaction = Transaction.builder()
@@ -113,6 +103,26 @@ public class EnvelopeService {
             envelope.getEnvelopeLimit(),
             envelope.getEnvelopeBalance()
         );
+    }
+
+
+    private boolean validateAccount(Account account, BigDecimal requestedAmount){
+        if (account.getAccountStatus() == AccountStatus.CLOSED ){
+            throw new IncorrectAccountStateException("Account cannot be in a closed state.");
+        }
+
+        BigDecimal accountBalance = account.getAvailableBalance();
+
+        if (requestedAmount.compareTo(accountBalance) > 0){
+            throw new IncorrectAccountBalanceException("Insufficient funds in account.");
+        }
+
+        return true;
+    }
+
+    private void moveFunds(Account account, Envelope envelope, BigDecimal amount){
+        account.setAvailableBalance(account.getAvailableBalance().subtract(amount));
+        envelope.setEnvelopeBalance(envelope.getEnvelopeBalance().add(amount));
     }
 
 }
