@@ -93,6 +93,40 @@ public class EnvelopeServiceTest {
         
     }
 
-    
+    // ---- Fund Envelope Tests
+    @Test
+    public void ShouldIncreaseEnvelopeBalanceAndDecreaseAccountBalance(){
+        
+    }
+
+    @Test
+    public void ShouldThrowExceptionIfAccountNotFound(){
+        // Test implementation
+    }
+
+    @Test
+    public void ShouldThrowExceptionIfAccountInClosedState(){
+        // Test implementation
+    }
+
+    @Test
+    public void ShouldThrowExceptionIfAmountGreaterThanAccountBalance(){
+        // Test implementation
+    }
+
+    @Test
+    public void ShouldThrowExceptionIfEnvelopeNotFound(){
+        // Test implementation
+    }
+
+    @Test
+    public void ShouldSaveAccountBalanceAndEnvelopeBalanceAndTransaction(){
+        // Test implementation
+    }
+
+    @Test
+    public void ShouldReturnTransferResponseDto(){
+        // Test implementation
+    }
 
 }

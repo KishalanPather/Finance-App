@@ -65,7 +65,6 @@ public class EnvelopeService {
 
         moveFunds(account, envelope, fundRequest.amount());
 
-
         Transaction transaction = Transaction.builder()
             .envelopeId(envelopeId)
             .accountId(fundRequest.accountId())
