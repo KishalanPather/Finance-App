@@ -27,9 +27,9 @@ public class EnvelopeController {
 
     @PostMapping("/{id}/funding")
     public EnvelopeResponseDto fundEnvelope(
-        @PathVariable("id") Integer accountId,
+        @PathVariable("id") Integer envelopeId,
         @RequestBody FundRequestDto fundRequest
     ){
-        return envelopeService.fundEnvelope(accountId, fundRequest);
+        return envelopeService.fundEnvelope(envelopeId, fundRequest);
     }
 }
