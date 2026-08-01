@@ -1,8 +1,6 @@
 package com.kish.financeapp.Transactions;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -11,7 +9,6 @@ import com.kish.financeapp.Accounts.AccountRepository;
 import com.kish.financeapp.Accounts.exceptions.AccountNotFoundException;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
-import com.kish.financeapp.Transactions.enums.TransactionType;
 
 import jakarta.transaction.Transactional;
 
