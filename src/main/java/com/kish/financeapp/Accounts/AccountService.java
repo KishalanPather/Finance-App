@@ -22,7 +22,7 @@ public class AccountService {
     } 
 
     @Transactional
-    public AccountResponseDto createAccount(CreateAccountRequestDto accountRequest) {
+    public AccountResponseDto createAccount(@org.jetbrains.annotations.NotNull CreateAccountRequestDto accountRequest) {
         if (accountRepository.existsByName(accountRequest.name())){
             throw new DuplicateAccountException("Account with same name already exists.");
         }

@@ -47,9 +47,7 @@ public class EnvelopeService {
 
         Envelope saved = envelopeRepository.save(envelope);
 
-        EnvelopeResponseDto envelopeResponse = mapEnvelopeResponse(saved);
-
-        return envelopeResponse;
+        return mapEnvelopeResponse(saved);
     }
 
 
@@ -78,8 +76,7 @@ public class EnvelopeService {
 
         transactionRepository.save(transaction);
 
-        EnvelopeResponseDto envelopeResponse = mapEnvelopeResponse(envelope);
-        return envelopeResponse;
+        return mapEnvelopeResponse(envelope);
     }
 
 
