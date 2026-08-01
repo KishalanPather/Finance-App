@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 import com.kish.financeapp.Accounts.Account;
 import com.kish.financeapp.Accounts.AccountRepository;
 import com.kish.financeapp.Accounts.exceptions.AccountNotFoundException;
+import com.kish.financeapp.Envelopes.Envelope;
+import com.kish.financeapp.Envelopes.EnvelopeRepository;
+import com.kish.financeapp.Envelopes.exceptions.EnvelopeNotFoundException;
+import com.kish.financeapp.Envelopes.exceptions.IncorrectEnvelopeBalanceException;
+import com.kish.financeapp.Transactions.dtos.AddExpenseRequestDto;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
 import com.kish.financeapp.Transactions.enums.TransactionType;
@@ -20,12 +25,15 @@ public class TransactionService {
     
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
+    private final EnvelopeRepository envelopeRepository;
 
     public TransactionService(
         TransactionRepository transactionRepository,
-        AccountRepository accountRepository) {
+        AccountRepository accountRepository,
+        EnvelopeRepository envelopeRepository) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
+        this.envelopeRepository = envelopeRepository;
     }
 
     @Transactional
@@ -34,15 +42,28 @@ public class TransactionService {
 
         account.setAvailableBalance(
             account.getAvailableBalance().add(incomeRequest.amount())
-            );
+        );
 
-            Transaction transaction = createIncomeTransaction(incomeRequest);
+        Transaction transaction = createIncomeTransaction(incomeRequest);
+        Transaction saved = transactionRepository.save(transaction);
 
-            Transaction saved = transactionRepository.save(transaction);
-
-            return mapToResponse(saved);
-
+        return mapToResponse(saved);
         
+    }
+
+    @Transactional
+    public TransactionResponseDto addExpense(AddExpenseRequestDto expenseRequest){
+        Envelope envelope = envelopeRepository.findById(expenseRequest.envelopeId())
+            .orElseThrow(() -> new EnvelopeNotFoundException("Envelope with id: "+ expenseRequest.envelopeId() + " not found."));
+
+        if (envelope.getEnvelopeBalance().compareTo(expenseRequest.amount()) < 0){
+            throw new IncorrectEnvelopeBalanceException("Insufficient funds in Envelope.");
+        }
+
+        envelope.setEnvelopeBalance(
+            envelope.getEnvelopeBalance().subtract(expenseRequest.amount())
+        );
+
     }
 
     //Helper Functions
