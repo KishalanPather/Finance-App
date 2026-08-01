@@ -64,6 +64,9 @@ public class TransactionService {
             envelope.getEnvelopeBalance().subtract(expenseRequest.amount())
         );
 
+        Transaction transaction = createExpenseTransaction(expenseRequest);
+        transactionRepository.save(transaction);
+        return mapToResponse(transaction);
     }
 
     //Helper Functions
@@ -83,6 +86,20 @@ public class TransactionService {
                 .date(new Date())
                 .note(incomeRequest.note())
                 .build();
+    }
+
+    private Transaction createExpenseTransaction(AddExpenseRequestDto expenseRequest){
+        return  Transaction.builder()
+                .envelopeId(expenseRequest.envelopeId())
+                .accountId(null)
+                .amount(expenseRequest.amount())
+                .description(expenseRequest.description())
+                .transactionType(TransactionType.EXPENSE)
+                .category(expenseRequest.category())
+                .date(new Date())
+                .note(expenseRequest.note())
+                .build();
+
     }
 
     private TransactionResponseDto mapToResponse(Transaction transaction){
