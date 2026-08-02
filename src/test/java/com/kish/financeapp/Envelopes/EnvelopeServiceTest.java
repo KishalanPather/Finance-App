@@ -267,6 +267,15 @@ public class EnvelopeServiceTest {
 
     @Test
     public void shouldReturnEmptyListWhenNoEnvelopes() {
-        // Test implementation
+        when(envelopeRepository.findAll()).thenReturn(List.of());
+
+        //act
+        List<EnvelopeResponseDto> result = envelopeService.getAllEnvelopes();
+
+        //assert
+        assertEquals(0, result.size());
+
+        verify(envelopeRepository).findAll();
+
     }
 }
