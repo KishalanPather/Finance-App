@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kish.financeapp.Transactions.dtos.AddExpenseRequestDto;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
 
@@ -24,5 +25,9 @@ public class TransactionController {
         return transactionService.addIncome(incomeRequest);
     }
 
+    @PostMapping("/expense")
+    public TransactionResponseDto addExpense(@RequestBody AddExpenseRequestDto expenseRequest){
+        return transactionService.addExpense(expenseRequest);
+    }
 
 }
