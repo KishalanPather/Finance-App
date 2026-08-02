@@ -2,6 +2,7 @@ package com.kish.financeapp.Transactions;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -188,4 +189,39 @@ public class TransactionServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenAmountIsNegative(){}
-}
+
+    // --- View All Transactions Tests
+    @Test
+    public void shouldReturnAllTransactions(){
+        //arrange
+        Transaction transaction1 = new Transaction(1, null, 1, BigDecimal.valueOf(100), "Salary", TransactionType.INCOME, "Job", new Date(), "Monthly salary");
+        Transaction transaction2 = new Transaction(2, null, 1, BigDecimal.valueOf(50), "Groceries", TransactionType.EXPENSE, "Food", new Date(), "Weekly groceries");
+        Transaction transaction3 = new Transaction(3, null, 1, BigDecimal.valueOf(200), "Freelance", TransactionType.INCOME, "Job", new Date(), "Freelance project");
+
+        when(transactionRepository.findAll()).thenReturn(List.of(transaction1, transaction2, transaction3));
+
+        //act
+        List<TransactionResponseDto> response = transactionService.getAllTransactions();
+
+        //assert
+        assertEquals(3, response.size());
+        assertEquals(1, response.get(0).transactionId());
+        assertEquals(2, response.get(1).transactionId());
+        assertEquals(3, response.get(2).transactionId());
+        }
+
+        @Test
+        public void shouldReturnEmptyListWhenNoTransactions(){
+            //arrange
+            when(transactionRepository.findAll()).thenReturn(List.of());
+
+            //act
+            List<TransactionResponseDto> response = transactionService.getAllTransactions();
+
+            //assert
+            assertEquals(0, response.size());
+
+            verify(transactionRepository).findAll();
+
+        }
+    }
