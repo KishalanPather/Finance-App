@@ -1,6 +1,7 @@
 package com.kish.financeapp.Transactions;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,12 @@ public class TransactionService {
         Transaction transaction = createExpenseTransaction(expenseRequest);
         transactionRepository.save(transaction);
         return mapToResponse(transaction);
+    }
+
+    public List<TransactionResponseDto> getAllTransactions(){
+        return transactionRepository.findAll().stream()
+            .map(this::mapToResponse)
+            .toList();
     }
 
     //Helper Functions
