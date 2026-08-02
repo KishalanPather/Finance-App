@@ -2,6 +2,7 @@ package com.kish.financeapp.Envelopes;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -77,6 +78,13 @@ public class EnvelopeService {
         transactionRepository.save(transaction);
 
         return mapEnvelopeResponse(envelope);
+    }
+
+
+    public List<EnvelopeResponseDto> getAllEnvelopes(){
+        return envelopeRepository.findAll().stream()
+            .map(this::mapEnvelopeResponse)
+            .toList();
     }
 
 

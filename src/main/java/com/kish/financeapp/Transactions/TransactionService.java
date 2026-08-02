@@ -14,6 +14,7 @@ import com.kish.financeapp.Envelopes.exceptions.IncorrectEnvelopeBalanceExceptio
 import com.kish.financeapp.Transactions.dtos.AddExpenseRequestDto;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
+import com.kish.financeapp.Transactions.enums.TransactionType;
 
 import jakarta.transaction.Transactional;
 
