@@ -1,5 +1,8 @@
 package com.kish.financeapp.Envelopes;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,5 +34,10 @@ public class EnvelopeController {
         @RequestBody FundRequestDto fundRequest
     ){
         return envelopeService.fundEnvelope(envelopeId, fundRequest);
+    }
+
+    @GetMapping()
+    public List<EnvelopeResponseDto> getAllEnvelopes(){
+        return envelopeService.getAllEnvelopes();
     }
 }

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -244,4 +245,28 @@ public class EnvelopeServiceTest {
         assertEquals(envelope.getEnvelopeBalance(), envelopeResponse.envelopeBalance());
     }
 
-}   
+    // ---- Get All Envelopes Tests
+    @Test
+    public void shouldReturnAllEnvelopes() {
+        //arange
+        Envelope envelope1 = new Envelope(1, "Envelope 1", EnvelopeGroup.FIXED, BigDecimal.valueOf(100), BigDecimal.valueOf(50));
+        Envelope envelope2 = new Envelope(2, "Envelope 2", EnvelopeGroup.VARIABLE, BigDecimal.valueOf(200), BigDecimal.valueOf(150));
+        Envelope envelope3 = new Envelope(3, "Envelope 3", EnvelopeGroup.FIXED, BigDecimal.valueOf(300), BigDecimal.valueOf(250));
+
+        when(envelopeRepository.findAll()).thenReturn(List.of(envelope1, envelope2, envelope3));
+
+        //act
+        List<EnvelopeResponseDto> result = envelopeService.getAllEnvelopes();
+
+        //assert
+        assertEquals(3, result.size());
+        assertEquals("Envelope 1", result.get(0).name());
+        assertEquals("Envelope 2", result.get(1).name());
+        assertEquals("Envelope 3", result.get(2).name());   
+    }
+
+    @Test
+    public void shouldReturnEmptyListWhenNoEnvelopes() {
+        // Test implementation
+    }
+}
