@@ -19,6 +19,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.kish.financeapp.Accounts.Account;
 import com.kish.financeapp.Accounts.AccountRepository;
 import com.kish.financeapp.Accounts.exceptions.AccountNotFoundException;
+import com.kish.financeapp.Envelopes.Envelope;
+import com.kish.financeapp.Envelopes.EnvelopeRepository;
+import com.kish.financeapp.Envelopes.exceptions.EnvelopeNotFoundException;
+import com.kish.financeapp.Envelopes.exceptions.IncorrectEnvelopeBalanceException;
+import com.kish.financeapp.Transactions.dtos.AddExpenseRequestDto;
 import com.kish.financeapp.Transactions.dtos.AddIncomeRequestDto;
 import com.kish.financeapp.Transactions.dtos.TransactionResponseDto;
 import com.kish.financeapp.Transactions.enums.TransactionType;
@@ -31,6 +36,9 @@ public class TransactionServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
+
+    @Mock
+    private EnvelopeRepository envelopeRepository;
 
     @InjectMocks
     private TransactionService transactionService;
@@ -189,6 +197,139 @@ public class TransactionServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenAmountIsNegative(){}
+
+    // -- Add an Expense transaction
+    
+    @Test
+    public void shouldSaveExpenseTransaction(){
+        //arrange
+        AddExpenseRequestDto expenseRequest = new AddExpenseRequestDto(
+            1,
+            BigDecimal.valueOf(50),
+            TransactionType.EXPENSE,
+            "Groceries",
+            "Food",
+            "Weekly groceries"
+        );
+
+        Envelope envelope = new Envelope();
+        envelope.setEnvelopeBalance(BigDecimal.valueOf(400)); //only balance needed for this test
+
+        //mock
+        when(envelopeRepository.findById(1))
+            .thenReturn(Optional.of(envelope));
+
+        //act
+        transactionService.addExpense(expenseRequest);
+
+        //assert
+        verify(transactionRepository).save(any(Transaction.class));
+    }
+
+    @Test
+    public void shouldDecreaseEnvelopeBalance(){
+        //arrange
+        AddExpenseRequestDto expenseRequest = new AddExpenseRequestDto(
+            1,
+            BigDecimal.valueOf(50),
+            TransactionType.EXPENSE,
+            "Groceries",
+            "Food",
+            "Weekly groceries"
+        );
+
+        Envelope envelope = new Envelope();
+        envelope.setEnvelopeBalance(BigDecimal.valueOf(400)); //only balance needed for this test
+
+        //mock
+        when(envelopeRepository.findById(1))
+            .thenReturn(Optional.of(envelope));
+
+
+        //act
+        transactionService.addExpense(expenseRequest);
+
+        //assert
+        assertEquals(BigDecimal.valueOf(350), envelope.getEnvelopeBalance());
+    }
+
+    @Test
+    public void shouldReturnCorrectTransactionResponseForExpenseDto(){
+        //arrange
+        AddExpenseRequestDto expenseRequest = new AddExpenseRequestDto(
+            1,
+            BigDecimal.valueOf(50),
+            TransactionType.EXPENSE,
+            "Groceries",
+            "Food",
+            "Weekly groceries"
+        );
+
+        Envelope envelope = new Envelope();
+        envelope.setEnvelopeId(1);
+        envelope.setEnvelopeBalance(BigDecimal.valueOf(400)); //only balance needed for this test
+
+        //mock
+        when(envelopeRepository.findById(1))
+            .thenReturn(Optional.of(envelope));
+
+
+        //act
+        TransactionResponseDto response = transactionService.addExpense(expenseRequest);
+
+        assertEquals(envelope.getEnvelopeId(), response.envelopeId());
+        assertEquals(null, response.accountId());
+        assertEquals(expenseRequest.amount(), response.amount());
+        assertEquals(expenseRequest.description(), response.description());
+        assertEquals(expenseRequest.category(), response.category());
+        assertEquals(expenseRequest.transactionType().toString(), response.transactionType().toString());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenEnvelopeNotFound(){
+         //arrange
+        AddExpenseRequestDto expenseRequest = new AddExpenseRequestDto(
+            1,
+            BigDecimal.valueOf(50),
+            TransactionType.EXPENSE,
+            "Groceries",
+            "Food",
+            "Weekly groceries"
+        );
+
+        when(envelopeRepository.findById(1))
+            .thenReturn((Optional.empty()));
+
+
+        //assert and act
+        assertThrows(EnvelopeNotFoundException.class, () -> transactionService.addExpense(expenseRequest));
+    }
+
+
+    @Test
+    public void shouldThrowExceptionWhenInsufficientEnvelopeBalance(){
+        //arrange
+        AddExpenseRequestDto expenseRequest = new AddExpenseRequestDto(
+            1,
+            BigDecimal.valueOf(500),
+            TransactionType.EXPENSE,
+            "Groceries",
+            "Food",
+            "Weekly groceries"
+        );
+
+        Envelope envelope = new Envelope();
+        envelope.setEnvelopeId(1);
+        envelope.setEnvelopeBalance(BigDecimal.valueOf(400));
+
+        //mock
+        when(envelopeRepository.findById(1))
+            .thenReturn(Optional.of(envelope));
+
+
+        //assert and act
+        assertThrows(IncorrectEnvelopeBalanceException.class, () -> transactionService.addExpense(expenseRequest));
+    }
 
     // --- View All Transactions Tests
     @Test
